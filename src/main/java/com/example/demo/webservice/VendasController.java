@@ -2,36 +2,75 @@ package com.example.demo.webservice;
 
 import com.example.demo.api.VendaBuscar;
 import com.example.demo.api.VendaRequest;
+import com.example.demo.business.models.Item;
+import com.example.demo.business.models.ItensVendidos;
 import com.example.demo.business.models.Venda;
-import com.example.demo.business.services.VendaService;
-import io.swagger.v3.oas.annotations.Operation;
+import com.example.demo.business.repository.ItemRepository;
+import com.example.demo.business.repository.VendaItemRepository;
+import com.example.demo.business.repository.VendaRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-@Tag(name="Vendas")
+
+@Tag(name = "Vendas")
 @RestController
 @RequestMapping({"/api/v1/vendas"})
 public class VendasController {
     @Autowired
-    VendaService vendaService;
+    private VendaRepository vendaRepository;
+
+    @Autowired
+    private VendaItemRepository vendaItemRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @PostMapping
-    public Venda criar(@RequestBody VendaRequest vendaRequest) {
-        System.out.println(vendaRequest.toString());
-        return vendaService.criar(vendaRequest);
+    public ResponseEntity<Venda> criarVenda(@RequestBody VendaRequest vendaRequest) {
+        // Obtém a venda do VendaRequest
+        Venda venda = vendaRequest.getVenda();
+
+        // Salva a venda
+        Venda novaVenda = vendaRepository.save(venda);
+
+        // Cria uma entrada na tabela venda_item para cada item vendido
+        for (Item item : vendaRequest.getItems()) {
+            ItensVendidos vendaItem = new ItensVendidos();
+            vendaItem.setVenda_id(novaVenda.getId());
+            vendaItem.setItem_vendido_id(item.getId()); // Suponho que você tenha o ID do item disponível
+            vendaItemRepository.save(vendaItem);
+        }
+
+        return new ResponseEntity<>(novaVenda, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<VendaRequest> getVendaById(@PathVariable UUID id) {
+        Venda venda = vendaRepository.findById(id).orElse(null);
+        if (venda == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Item> itensVendidos = itemRepository.findByVendaId(venda.getId());
+
+        VendaRequest vendaRequest = new VendaRequest(venda, itensVendidos);
+
+        return ResponseEntity.ok(vendaRequest);
     }
 
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable UUID id) {
-        System.out.println(id);
-        vendaService.excluir(id);
+    public ResponseEntity<Void> deleteVenda(@PathVariable UUID id) {
+        if (!vendaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        vendaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public List<VendaRequest> buscar(@ModelAttribute VendaBuscar venda) {
-        return vendaService.buscar(venda);
-    }
+
 }

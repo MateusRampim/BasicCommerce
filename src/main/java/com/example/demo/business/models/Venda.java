@@ -11,37 +11,18 @@ import java.util.UUID;
 public class Venda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "total")
-    private float total;
+    @Column(nullable = false)
+    private Float total;
 
-    @ManyToOne
-    @JoinColumn(name = "vendedor_id")
-    private Vendedor vendedor;
+    @Column(name = "client_id")
+    private UUID clientId;
 
-    @Column(name = "dia")
+    @Column(nullable = false)
     private Date dia;
 
-    public Venda() {
-    }
-
-    public Venda(float total, Vendedor vendedor, Date dia) {
-        this.total = total;
-        this.vendedor = vendedor;
-        this.dia = dia;
-    }
-
-    @Override
-    public String toString() {
-        return "Venda{" +
-                "id=" + id +
-                ", total=" + total +
-                ", vendedor=" + vendedor.toString() +
-                ", dia=" + dia +
-                '}';
-    }
+    public Venda() {}
 
     public UUID getId() {
         return id;
@@ -51,20 +32,20 @@ public class Venda implements Serializable {
         this.id = id;
     }
 
-    public float getTotal() {
+    public Float getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(Float total) {
         this.total = total;
     }
 
-    public Vendedor getVendedor() {
-        return vendedor;
+    public UUID getClientId() {
+        return clientId;
     }
 
-    public void setVendedor(Vendedor vendedor) {
-        this.vendedor = vendedor;
+    public void setClientId(UUID clientId) {
+        this.clientId = clientId;
     }
 
     public Date getDia() {

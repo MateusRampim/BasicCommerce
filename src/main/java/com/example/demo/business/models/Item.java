@@ -11,8 +11,14 @@ public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @Column(nullable = false)
     private String nome;
+
+    @Column(nullable = false)
     private int estoque;
+
+    @Column(nullable = false)
     private float valor;
 
     public Item() {

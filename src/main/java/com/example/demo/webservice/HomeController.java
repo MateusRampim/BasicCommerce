@@ -1,6 +1,5 @@
 package com.example.demo.webservice;
 
-import com.example.demo.business.models.Vendedor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,7 @@ public class HomeController {
         model.addAttribute("nome", nome);
         model.addAttribute("idade", idade);
         model.addAttribute("sexo", sexo);
-        Vendedor vend = new Vendedor(nome, sexo);
+        //Vendedor vend = new Vendedor(nome, sexo);
         return "resultado";
     }
 }
