@@ -1,13 +1,14 @@
 package com.example.demo.business.models;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "itens")
+@Table(name = "item")
 public class Item implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -19,16 +20,18 @@ public class Item implements Serializable {
     private int estoque;
 
     @Column(nullable = false)
-    private float valor;
+    private BigDecimal valor;
 
     public Item() {
     }
 
-    public Item(String nome, int estoque, float valor) {
+    public Item(String nome, int estoque, BigDecimal valor) {
         this.nome = nome;
         this.estoque = estoque;
         this.valor = valor;
     }
+
+    // Getters e Setters
 
     @Override
     public String toString() {
@@ -41,11 +44,11 @@ public class Item implements Serializable {
     }
 
     public UUID getId() {
-        return this.id;
+        return id;
     }
 
     public String getNome() {
-        return this.nome;
+        return nome;
     }
 
     public void setNome(String nome) {
@@ -53,19 +56,18 @@ public class Item implements Serializable {
     }
 
     public int getEstoque() {
-        return this.estoque;
+        return estoque;
     }
 
     public void setEstoque(int estoque) {
         this.estoque = estoque;
     }
 
-    public float getValor() {
-        return this.valor;
+    public BigDecimal getValor() {
+        return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-
 }

@@ -56,12 +56,14 @@ public class VendasController {
             return ResponseEntity.notFound().build();
         }
 
-        List<Item> itensVendidos = itemRepository.findByVendaId(venda.getId());
+        List<UUID> itemIds = vendaItemRepository.findItemIdsByVendaId(id);
+        List<Item> itensVendidos = itemRepository.findAllById(itemIds);
 
         VendaRequest vendaRequest = new VendaRequest(venda, itensVendidos);
 
         return ResponseEntity.ok(vendaRequest);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVenda(@PathVariable UUID id) {

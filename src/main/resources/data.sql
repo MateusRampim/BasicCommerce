@@ -1,14 +1,14 @@
 CREATE
 EXTENSION IF NOT EXISTS "uuid-ossp";-- liberar o uso da funçao UUID generate
-CREATE TABLE client
+CREATE TABLE cliente
 (
     id      UUID PRIMARY KEY,
     nome    VARCHAR(50),
-    contato VARCHAR(15),
+    email VARCHAR(255),
     senha VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE itens
+CREATE TABLE item
 (
     id      UUID PRIMARY KEY,
     nome    VARCHAR(50),
