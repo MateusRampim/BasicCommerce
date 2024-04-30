@@ -18,8 +18,6 @@ public class Cliente implements Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String senha;
 
 
     public Cliente() {
@@ -53,11 +51,4 @@ public class Cliente implements Serializable {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 }

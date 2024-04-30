@@ -28,11 +28,7 @@ public class ClienteController {
                     .body("O e-mail já está cadastrado");
         }
 
-        // Hash da senha (Você pode implementar uma lógica mais segura para hash)
-        String senhaHash = hashSenha(usuario.getSenha());
-        usuario.setSenha(senhaHash);
 
-        // Salvar o usuário no banco de dados
         Cliente novoUsuario = clienteRepository.save(usuario);
 
         return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
@@ -60,11 +56,7 @@ public class ClienteController {
         usuario.setNome(usuarioAtualizado.getNome());
         usuario.setEmail(usuarioAtualizado.getEmail());
 
-        // Verifica se a senha foi fornecida e a atualiza, se necessário
-        if (usuarioAtualizado.getSenha() != null && !usuarioAtualizado.getSenha().isEmpty()) {
-            String senhaCriptografada = hashSenha(usuarioAtualizado.getSenha());
-            usuario.setSenha(senhaCriptografada);
-        }
+
 
         Cliente usuarioAtualizadoBanco = clienteRepository.save(usuario);
         return ResponseEntity.ok(usuarioAtualizadoBanco);
@@ -76,29 +68,5 @@ public class ClienteController {
         return ResponseEntity.noContent().build();
     }
 
-    private String hashSenha(String senha) {
-        try {
-            // Obtém uma instância do MessageDigest para SHA-256
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
-            // Calcula o hash da senha
-            byte[] hash = digest.digest(senha.getBytes());
-
-            // Converte o hash em uma representação hexadecimal
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            // Tratar a exceção, caso o algoritmo não seja suportado
-            e.printStackTrace();
-            return null;
-        }
-
-    }
 }

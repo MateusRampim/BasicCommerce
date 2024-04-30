@@ -4,8 +4,7 @@ CREATE TABLE cliente
 (
     id      UUID PRIMARY KEY,
     nome    VARCHAR(50),
-    email VARCHAR(255),
-    senha VARCHAR(255) NOT NULL
+    email VARCHAR(255)
 );
 
 CREATE TABLE item
