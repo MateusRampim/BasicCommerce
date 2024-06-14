@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -41,6 +42,14 @@ public class UsuarioController {
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable UUID id) {
         Usuario usuario = usuarioRepository.findById(id).orElse(null);
         if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
+    }
+    @GetMapping()
+    public ResponseEntity<List<Usuario> >getUsuarios() {
+        List<Usuario> usuario = usuarioRepository.findAll();
+        if (usuario .isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(usuario);

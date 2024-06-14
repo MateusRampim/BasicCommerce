@@ -21,7 +21,7 @@ CREATE TABLE venda
     total       FLOAT,
     client_id   UUID,
     dia         DATE,
-    FOREIGN KEY (client_id) REFERENCES client (id)
+    FOREIGN KEY (client_id) REFERENCES cliente (id)
 );
 
 CREATE TABLE venda_item

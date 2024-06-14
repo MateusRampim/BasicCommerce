@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -42,6 +43,14 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(usuario);
+    }
+    @GetMapping()
+    public ResponseEntity<List<Cliente>> getUsuarios() {
+        List<Cliente> usuarios = clienteRepository.findAll();
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
     }
 
 

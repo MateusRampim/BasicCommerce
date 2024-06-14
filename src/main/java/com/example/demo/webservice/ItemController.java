@@ -27,6 +27,14 @@ public class ItemController {
         }
         return ResponseEntity.ok(item);
     }
+    @GetMapping()
+    public ResponseEntity<List<Item>> getItens() {
+        List<Item> item = itemRepository.findAll();
+        if (item.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(item);
+    }
 
     @PostMapping
     public ResponseEntity<Item> criarItem(@RequestBody Item item) {

@@ -63,6 +63,15 @@ public class VendasController {
 
         return ResponseEntity.ok(vendaRequest);
     }
+    @GetMapping()
+    public ResponseEntity<List<Venda>> getVendas() {
+        List<Venda> venda = vendaRepository.findAll();
+        if (venda.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(venda);
+    }
 
 
     @DeleteMapping("/{id}")
